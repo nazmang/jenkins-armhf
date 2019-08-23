@@ -46,5 +46,5 @@ docker build \
 	--no-cache --file Dockerfile.$ARCH .
 	
 docker tag $PREFIX/jenkins-armhf:$JENKINS_VERSION $PREFIX/jenkins-armhf:latest
-#docker push $PREFIX/jenkins-armhf:$JENKINS_VERSION
-#docker push $PREFIX/jenkins-armhf:latest
+docker push $PREFIX/jenkins-armhf:$JENKINS_VERSION
+docker push $PREFIX/jenkins-armhf:latest
