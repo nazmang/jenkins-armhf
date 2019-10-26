@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JENKINS_VERSION=2.164.1
+JENKINS_VERSION=2.190.1
 JENKINS_USER=jenkins
 JENKINS_GROUP=jenkins
 JENKINS_UID=1000
@@ -12,7 +12,7 @@ JENKINS_SHA=65543f5632ee54344f3351b34b305702df12393b3196a95c3771ddb3819b220b
 JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
 TINI_VERSION=v0.16.1
 
-PREFIX="nazmang"
+PREFIX="nazman"
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RESOURCEDIR="$BASEDIR/docker"
 ARCH="$(dpkg --print-architecture)"
