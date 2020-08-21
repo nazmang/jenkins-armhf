@@ -31,7 +31,7 @@ VOLUME $JENKINS_HOME
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 # Use tini as subreaper in Docker container to adopt zombie processes
-COPY docker/tiny	/sbin/tiny
+COPY docker/tini	/sbin/tini
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION

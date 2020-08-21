@@ -25,8 +25,8 @@ if [ ! -d "$RESOURCEDIR" ]; then
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini_pub.gpg
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini-shim.sh
-	  curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$ARCH -o tiny
-	  curl -sSLO ${JENKINS_URL}
+	  curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$ARCH -o tini
+	  curl -fsSL ${JENKINS_URL} -o jenkins.war
   	  chmod +rx *
 	  cd $BASEDIR
 fi
