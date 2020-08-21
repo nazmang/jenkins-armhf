@@ -14,7 +14,7 @@ TINI_VERSION=v0.16.1
 PREFIX="nazman"
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RESOURCEDIR="$BASEDIR/docker"
-ARCH="$(dpkg --print-architecture)"
+ARCH=${1:-armhf} 
 
 if [ ! -d "$RESOURCEDIR" ]; then
 	  mkdir $RESOURCEDIR && cd $RESOURCEDIR
@@ -25,12 +25,14 @@ if [ ! -d "$RESOURCEDIR" ]; then
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini_pub.gpg
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini-shim.sh
-	  chmod +rx *
+	  curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$ARCH -o tiny
+	  curl -sSLO ${JENKINS_URL}
+  	  chmod +rx *
 	  cd $BASEDIR
 fi
 
 docker build \
-	--rm --tag $PREFIX/jenkins-armhf:$JENKINS_VERSION \
+	--rm --tag $PREFIX/jenkins-$ARCH:$JENKINS_VERSION \
 	--build-arg JENKINS_VERSION=$JENKINS_VERSION \
 	--build-arg user=$JENKINS_USER \
 	--build-arg group=$JENKINS_GROUP \
@@ -44,6 +46,6 @@ docker build \
 	--build-arg TINI_VERSION=$TINI_VERSION \
 	--no-cache --file Dockerfile.$ARCH .
 	
-docker tag $PREFIX/jenkins-armhf:$JENKINS_VERSION $PREFIX/jenkins-armhf:latest
-docker push $PREFIX/jenkins-armhf:$JENKINS_VERSION
-docker push $PREFIX/jenkins-armhf:latest
+docker tag $PREFIX/jenkins-$ARCH:$JENKINS_VERSION $PREFIX/jenkins-$ARCH:latest
+docker push $PREFIX/jenkins-$ARCH:$JENKINS_VERSION
+docker push $PREFIX/jenkins-$ARCH:latest
