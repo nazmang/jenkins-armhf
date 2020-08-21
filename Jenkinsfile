@@ -42,7 +42,8 @@ pipeline {
 			// Run the 
 			steps {			    
 				sh '''
-                mkdir docker || cd docker
+                mkdir docker
+				cd docker
                 curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/init.groovy
                 curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins.sh
                 curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh
@@ -84,6 +85,7 @@ pipeline {
 						sh 'docker push nazman/jenkins-armhf:latest'						
             		}
 				}
+				sh 'docker rmi nazman/jenkins-armhf:latest'
 			}
 		}
 		
