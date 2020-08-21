@@ -42,7 +42,7 @@ pipeline {
 			// Run the 
 			steps {			    
 				sh '''
-                mkdir docker
+                mkdir -p docker
 				cd docker
                 curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/init.groovy
                 curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins.sh
