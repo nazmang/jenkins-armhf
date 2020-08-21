@@ -1,7 +1,5 @@
 FROM arm32v7/openjdk:8
 
-RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
-
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
