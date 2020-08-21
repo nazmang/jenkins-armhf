@@ -4,7 +4,7 @@ pipeline {
 		registryCredential = 'dockerhub'
 		DOCKER_BUILDKIT = '1'
 		DOCKER_CLI_EXPERIMENTAL = 'enabled'
-		JENKINS_VERSION = '2.199'
+		JENKINS_VERSION = '2.235.5'
 		JENKINS_USER = 'jenkins'
 		JENKINS_GROUP = 'jenkins'
 		JENKINS_UID = '1000'
