@@ -1,4 +1,5 @@
-FROM arm32v7/openjdk:8
+#FROM arm32v7/openjdk:8
+FROM adoptopenjdk:hotspot
 
 ARG user=jenkins
 ARG group=jenkins
