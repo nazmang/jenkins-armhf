@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JENKINS_VERSION=2.219
+JENKINS_VERSION=2.46.1
 JENKINS_USER=jenkins
 JENKINS_GROUP=jenkins
 JENKINS_UID=1000
@@ -21,7 +21,6 @@ if [ ! -d "$RESOURCEDIR" ]; then
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/init.groovy
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins.sh
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/install-plugins.sh
-	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/plugins.sh
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/jenkins-support
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini_pub.gpg
 	  curl -sSLO https://raw.githubusercontent.com/jenkinsci/docker/master/tini-shim.sh
@@ -32,7 +31,7 @@ if [ ! -d "$RESOURCEDIR" ]; then
 fi
 
 docker build \
-	--rm --tag $PREFIX/jenkins-$ARCH:$JENKINS_VERSION \
+	--tag $PREFIX/jenkins-$ARCH:$JENKINS_VERSION \
 	--build-arg JENKINS_VERSION=$JENKINS_VERSION \
 	--build-arg user=$JENKINS_USER \
 	--build-arg group=$JENKINS_GROUP \
@@ -44,7 +43,7 @@ docker build \
 	--build-arg JENKINS_SHA=$JENKINS_SHA \
 	--build-arg JENKINS_URL=$JENKINS_URL \
 	--build-arg TINI_VERSION=$TINI_VERSION \
-	--no-cache --file Dockerfile.$ARCH .
+	--no-cache --file Dockerfile .
 	
 docker tag $PREFIX/jenkins-$ARCH:$JENKINS_VERSION $PREFIX/jenkins-$ARCH:latest
 docker push $PREFIX/jenkins-$ARCH:$JENKINS_VERSION
