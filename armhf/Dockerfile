@@ -1,5 +1,9 @@
-#FROM arm32v7/openjdk:8
-FROM adoptopenjdk:hotspot
+FROM adoptopenjdk:8-jdk-hotspot-bionic
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y git curl  \
+    && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash  \
+    && apt-get install -y git-lfs unzip \ 
+    && git lfs install && rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
 ARG group=jenkins
@@ -30,7 +34,15 @@ VOLUME $JENKINS_HOME
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 # Use tini as subreaper in Docker container to adopt zombie processes
-COPY docker/tini	/sbin/tini
+ARG TINI_VERSION=v0.16.1
+COPY tini_pub.gpg ${JENKINS_HOME}/tini_pub.gpg
+RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture) -o /sbin/tini \
+  && curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture).asc -o /sbin/tini.asc \
+  && gpg --no-tty --import ${JENKINS_HOME}/tini_pub.gpg \
+  && gpg --verify /sbin/tini.asc \
+  && rm -rf /sbin/tini.asc /root/.gnupg \
+  && chmod +x /sbin/tini
+
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
@@ -54,9 +66,9 @@ USER ${user}
 COPY docker/jenkins.war /usr/share/jenkins/jenkins.war
 COPY docker/jenkins-support /usr/local/bin/jenkins-support
 COPY docker/jenkins.sh /usr/local/bin/jenkins.sh
-COPY docker/tini-shim.sh /bin/tini
+COPY docker/tini-shim.sh /bin/tini 
+
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
 # from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
-COPY docker/plugins.sh /usr/local/bin/plugins.sh
 COPY docker/install-plugins.sh /usr/local/bin/install-plugins.sh

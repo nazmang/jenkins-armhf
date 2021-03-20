@@ -1,0 +1,37 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.34">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.4">
+      <projectUrl>https://github.com/nazmang/jenkins-armhf.git/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.12">
+      <gitLabConnection></gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.4">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.73">
+    <script>node {
+   
+    git url: &apos;https://github.com/nazmang/jenkins-armhf.git&apos;
+    def dockerfile = &apos;Dockerfile.armhf&apos;
+    def jenkins_version = &apos;2.164.1&apos;
+    docker.withServer(&apos;tcp://rpi1.comintern.local:2376&apos;) {
+        def customImage = docker.build(&quot;nazman/jenkins-armhf:${jenkins_version}&quot;, &quot;--build-arg JENKINS_VERSION=${jenkins_version} -f ${dockerfile} .&quot;) 
+    }
+            
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
